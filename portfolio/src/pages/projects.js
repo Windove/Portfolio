@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from "react";
 import { Canvas, useThree, useFrame } from "@react-three/fiber";
 import { degreesToRadians, mix } from "popmotion";
 import * as THREE from 'three';
-import { TextureLoader, DoubleSide } from 'three';
 import Head from 'next/head'
 import { useScroll } from "framer-motion";
 
@@ -58,36 +57,6 @@ const Star = ({ initialPosition, scrollProgress, speed }) => {
 };
 
 
-// picture gallery
-const TexturePlane = ({ initialPosition, texture, scrollProgress, speed }) => {
-    const ref = useRef();
-    const time = useRef(0); // Using useRef to persist state across renders
-
-    const initialAngle = Math.atan2(initialPosition.z, initialPosition.x);
-
-    useFrame((state, delta) => {
-        if (ref.current) {
-            const radius = initialPosition.length();
-            const adjustedSpeed = (Math.abs(scrollProgress - 0.5) * 2) * speed; // Speed adjustment according to scroll
-            time.current += delta * adjustedSpeed; // increment time based on the current frame duration and speed
-            const angle = time.current + initialAngle;
-            const y = initialPosition.y;
-            const x = radius * Math.cos(angle);
-            const z = radius * Math.sin(angle);
-            ref.current.position.set(x, y, z);
-            ref.current.lookAt(new THREE.Vector3(0, 0, 0)); // make the plane face towards the center
-        }
-    });
-
-    return (
-        <mesh ref={ref} position={initialPosition}>
-            <planeBufferGeometry args={[1, 1]} /> {/* Set the size of the plane */}
-            <meshBasicMaterial map={texture} side={DoubleSide} />
-        </mesh>
-    );
-};
-
-
 // The scene
 const Scene = ({ scrollYProgress }) => {
     const { camera } = useThree();
@@ -121,35 +90,6 @@ const Scene = ({ scrollYProgress }) => {
         )));
     }, [starsData, scrollProgress]);
 
-
-    // Create 5 texture planes for the gallery
-    const [texturePlanes, setTexturePlanes] = useState([]);
-    const [textures, setTextures] = useState([]);
-
-    useEffect(() => {
-        const textureLoader = new TextureLoader();
-        const imageTexture1 = textureLoader.load("/images/projects/agency-website-cover-image.jpg");
-        const imageTexture2 = textureLoader.load("/images/profile/developer-pic-2.jpg");
-        setTextures([imageTexture1, imageTexture2]);
-    }, []);
-
-    useEffect(() => {
-        const newTexturePlanes = [];
-        const speed = 0.25;  // Define speed here
-        if (textures.length > 0) {
-            const numberOfPlanes = 5;
-            for (let i = 0; i < numberOfPlanes; i++) {
-                const distance = 5; // set a fixed distance for all planes
-                const yAngle = Math.PI / 2; // set yAngle to 90 degrees (PI/2 radians) to center on the horizontal axis
-                const xAngle = (2 * Math.PI / numberOfPlanes) * i; // distribute the planes evenly around the circle
-                const position = new THREE.Vector3().setFromSphericalCoords(distance, yAngle, xAngle);
-                newTexturePlanes.push(<TexturePlane key={i} initialPosition={position.clone()} texture={textures[i % 2]} scrollProgress={scrollProgress} speed={speed} />);
-            }
-            setTexturePlanes(newTexturePlanes);
-        }
-    }, [textures, scrollProgress]);
-
-
     // Update the camera position based on scroll progress
     useFrame((state, delta) => {
         const yAngle = mix(0.001, degreesToRadians(180), scrollProgress);
@@ -179,7 +119,6 @@ const Scene = ({ scrollYProgress }) => {
             <ambientLight />
             <Icosahedron />
             {stars}
-            {texturePlanes}
         </>
     );
 };

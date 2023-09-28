@@ -15,7 +15,11 @@ export default function App({ Component, pageProps }) {
 
   // Conditionally apply 'bg-light' class
   const bgColorClass = router.pathname !== '/projects' ? 'bg-light' : 'bg-transparent';
-  const footerColorClass = router.pathname !== '/projects' ? '' : '!bg-spaceColor1';
+  const footerColorClass = router.pathname !== '/projects' ? '' : '!bg-transparent !text-light';
+
+  // Determine if it's the projects page
+  const isProjectsPage = router.pathname === '/projects';
+  const fixedClass = isProjectsPage ? 'fixed w-full z-50' : '';
 
   return (
     <>
@@ -25,9 +29,13 @@ export default function App({ Component, pageProps }) {
       </Head>
 
       <main className={`${montserrat.variable} font-mont ${bgColorClass} w-full min-h-screen`}>
-        <NavBar />
+        <div className={`${fixedClass} top-0`}>
+          <NavBar className={`${footerColorClass}`} />
+        </div>
         <Component {...pageProps} />
-        <Footer className={`${footerColorClass}`} />
+        <div className={`${fixedClass} bottom-0`}>
+          <Footer className={`${footerColorClass}`} />
+        </div>
       </main>
     </>
   );

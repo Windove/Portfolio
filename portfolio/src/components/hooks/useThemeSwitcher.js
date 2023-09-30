@@ -46,6 +46,14 @@ const useThemeSwitcher = () => {
         }
     }, [mode]);
 
+    useEffect(() => {
+        const savedTheme = window.localStorage.getItem('color-theme');
+        const prefersDark = window.matchMedia(preferDarkQuery).matches;
+        const currentMode = savedTheme ? savedTheme : (prefersDark ? "dark" : "light");
+
+        setMode(currentMode);
+    }, []);
+
 
     return [mode, setMode];
 };

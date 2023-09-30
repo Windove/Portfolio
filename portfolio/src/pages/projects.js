@@ -3,102 +3,34 @@ import { Canvas, useThree, useFrame } from "@react-three/fiber";
 import { degreesToRadians, mix } from "popmotion";
 import * as THREE from 'three';
 import Head from 'next/head';
+import Star from "@/components/projects_objects/Star";
+import Planet from "@/components/projects_objects/Planet";
+import Icosahedron from "@/components/projects_objects/Icosahedron";
+
+/* (LAGS) Load the HDRI texture (put in Scene component and import at top)
 import { RGBELoader } from "@/components/loaders/RGBELoader";
-
-const color = "";
-
-// A single icosahedron
-const Icosahedron = ({ rotationSpeed = -0.25 }) => {
-    const ref = useRef();
-    useFrame((state) => {
-        if (ref.current) {
-            const time = state.clock.elapsedTime;
-            ref.current.rotation.y = time * rotationSpeed;  // Adjust the rotation speed as needed
-        }
+// Load the HDRI texture
+const { scene } = useThree();
+useEffect(() => {
+    new RGBELoader().load("/images/HDRI/hdr.hdr", function (texture) {
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+        console.log("Texture loaded", texture);
+        scene.background = texture;
+        scene.environment = texture;
     });
+}, [scene]);
+*/
 
-    return (
-        <mesh ref={ref}>
-            <icosahedronGeometry args={[2, 1]} />
-            <meshBasicMaterial wireframe color={color} />
-        </mesh>
-    );
-};
-
-// A single star
-const Star = ({ initialPosition, randomRadius, speed }) => {
-    const ref = useRef();
-    const time = useRef(0);  // Using useRef to persist state across renders
-
-    // Calculate initial angle
-    const initialAngle = Math.atan2(initialPosition.z, initialPosition.x);
-
-
-    useFrame((state, delta) => {
-        if (ref.current) {
-            const radius = initialPosition.length();
-            const adjustedSpeed = speed;
-            time.current += delta * adjustedSpeed;
-            const angle = time.current + initialAngle;
-            const y = initialPosition.y;
-            const x = radius * Math.cos(angle);
-            const z = radius * Math.sin(angle);
-            ref.current.position.set(x, y, z);
-        }
-    });
-
-    return (
-        <mesh ref={ref} position={initialPosition}>
-            <octahedronGeometry args={[randomRadius, 0]} />
-            <meshBasicMaterial wireframe color={color} />
-        </mesh>
-    );
-};
-
-// A single planet
-const Planet = ({ initialPosition, speed, planetColor }) => {
-    const ref = useRef();
-    const time = useRef(0);  // Using useRef to persist state across renders
-
-    // Calculate initial angle
-    const initialAngle = Math.atan2(initialPosition.z, initialPosition.x);
-
-    useFrame((state, delta) => {
-        if (ref.current) {
-            const radius = initialPosition.length();
-            const adjustedSpeed = speed;
-            time.current += delta * adjustedSpeed;
-            const angle = time.current + initialAngle;
-            const y = initialPosition.y;
-            const x = radius * Math.cos(angle);
-            const z = radius * Math.sin(angle);
-            ref.current.position.set(x, y, z);
-        }
-    });
-
-    const handleOnClick = () => {
-        // Handle the click event here
-        event.stopPropagation();
-        console.log("Planet clicked!");
-    };
-
-    return (
-        <mesh ref={ref} position={initialPosition} onClick={handleOnClick}
-            onPointerOver={() => (document.body.style.cursor = 'pointer')}
-            onPointerOut={() => (document.body.style.cursor = 'auto')}
-        >
-            <sphereGeometry args={[0.5, 32, 32]} />
-            <meshBasicMaterial color={planetColor} />
-        </mesh>
-    );
-};
+function lerp(start, end, t) {
+    return start * (1 - t) + end * t;
+}
 
 // The scene
 const Scene = ({ starAmount, cameraAngle }) => {
+    // camera controls
     const { camera } = useThree();
-
     useFrame(() => {
-        const distance = 30;  // Keeping distance constant
+        const distance = 35;
 
         // Use the cameraAngle prop to set the camera's position
         camera.position.setFromSphericalCoords(distance, degreesToRadians(80), cameraAngle);
@@ -106,19 +38,18 @@ const Scene = ({ starAmount, cameraAngle }) => {
         camera.updateProjectionMatrix();
         camera.lookAt(0, 0, 0);
     });
+    
+    const [currentCameraAngle, setCurrentCameraAngle] = useState(cameraAngle);
+    useFrame(() => {
+        const distance = 35;
 
-    /*
-    // Load the HDRI texture
-    const { scene } = useThree();
-    useEffect(() => {
-        new RGBELoader().load("/images/HDRI/hdr.hdr", function (texture) {
-            texture.mapping = THREE.EquirectangularReflectionMapping;
-            console.log("Texture loaded", texture);
-            scene.background = texture;
-            scene.environment = texture;
-        });
-    }, [scene]);
-    */
+        // Lerp the current camera angle towards the target camera angle
+        setCurrentCameraAngle(prev => lerp(prev, cameraAngle, 0.05)); // Adjust the 0.05 value to change the smoothness
+
+        camera.position.setFromSphericalCoords(distance, degreesToRadians(80), currentCameraAngle);
+        camera.updateProjectionMatrix();
+        camera.lookAt(0, 0, 0);
+    });
 
     // Keep track of the initial stars positions and speeds
     const starInputValues = {
@@ -170,7 +101,7 @@ const Scene = ({ starAmount, cameraAngle }) => {
     const [stars, setStars] = useState([]);
     useEffect(() => {
         setStars(starsData.map((starData, i) => (
-            <Star key={i} initialPosition={starData.position} randomRadius={starData.randomRadius} speed={starData.speed} />
+            <Star key={i} initialPosition={starData.position} randomRadius={starData.randomRadius} speed={starData.speed} color={"red"} />
         )));
     }, [starsData]);
 
@@ -182,9 +113,9 @@ const Scene = ({ starAmount, cameraAngle }) => {
     return (
         <>
             <ambientLight />
-            <Icosahedron rotationSpeed={-0.25} />
-            <Planet initialPosition={planetPosition} speed={0.1} planetColor={"blue"} />
-            <Planet initialPosition={planetPosition2} speed={0.1} planetColor={"red"} />
+            <Icosahedron rotationSpeed={-0.25} color={"red"} />
+            <Planet initialPosition={planetPosition} speed={0.1} color={"blue"} />
+            <Planet initialPosition={planetPosition2} speed={0.1} color={"blue"} />
             {stars}
         </>
     );
@@ -214,8 +145,6 @@ const projects = () => {
             window.removeEventListener('wheel', handleScroll);
         };
     }, []);
-
-
 
     return (
         <>

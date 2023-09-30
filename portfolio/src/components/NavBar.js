@@ -66,21 +66,23 @@ const NavBar = ({ className = "" }) => {
                     <TwitterIcon />
                 </motion.a>
 
-                <button 
-                onClick={() => setMode(mode === "light" ? "dark" : "light")}
-                className={`ml-4 flex items-center justify-center rounded-full p-1 w-10
-                ${mode === "dark" ? "bg-light text-dark" : "bg-dark text-light"}`}>
+                <button
+                    onClick={() => setMode(mode === "light" ? "dark" : "light")}
+                    className={`ml-6 flex items-center justify-center rounded-full p-1 w-10
+                    ${mode === "dark" ? "bg-light text-dark" : "bg-dark text-light"}`}
+                >
                     {
                         mode === "dark" ?
-                            <SunIcon onClick={() => setMode("light")} className={"fill-dark"} />
+                            <SunIcon className={"fill-dark"} />
                             :
-                            <MoonIcon onClick={() => setMode("dark")} className={"fill-dark"} />
+                            <MoonIcon className={"fill-dark"} />
                     }
                 </button>
+
             </nav>
 
             <div className='absolute left-[50%] top-2 translate-x-[.50%]'>
-                <Logo className={`${router.pathname === "/projects" ? "!border-light" : ""}`}/>
+                <Logo className={`${router.pathname === "/projects" ? "!border-light" : ""}`} />
             </div>
         </header>
     )

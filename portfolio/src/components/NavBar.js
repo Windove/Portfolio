@@ -2,8 +2,9 @@ import React from 'react'
 import Link from 'next/link'
 import Logo from './Logo'
 import { useRouter } from 'next/router'
-import { GithubIcon, LinkedInIcon, TwitterIcon } from './Icons'
+import { GithubIcon, LinkedInIcon, MoonIcon, SunIcon, TwitterIcon } from './Icons'
 import { motion } from 'framer-motion'
+import useThemeSwitcher from './hooks/useThemeSwitcher'
 
 const CustomLink = ({ href, title, className = "" }) => {
     const router = useRouter();
@@ -17,15 +18,23 @@ const CustomLink = ({ href, title, className = "" }) => {
             absolute left-0 -bottom-0.5
             group-hover:w-full transition-[width] ease duration-300
             ${router.pathname === href ? "w-full" : "w-0"}
+            ${router.pathname === "/projects" ? "!bg-light" : ""}
+            dark:bg-light
             `}>&nbsp;</span>
         </Link>
     )
 }
 
 
-const NavBar = () => {
+const NavBar = ({ className = "" }) => {
+
+    const [mode, setMode] = useThemeSwitcher();
+    const router = useRouter();
+
     return (
-        <header className='w-full px-32 py-8 font-medium flex items-center justify-between'>
+        <header className={`w-full px-32 py-8 font-medium flex items-center justify-between ${className}
+        dark:text-light
+        `}>
             <nav>
                 <CustomLink href='/' title={"Home"} className='mr-4' />
                 <CustomLink href='/about' title={"About"} className='mx-4' />
@@ -56,10 +65,24 @@ const NavBar = () => {
                 >
                     <TwitterIcon />
                 </motion.a>
+
+                <button
+                    onClick={() => setMode(mode === "light" ? "dark" : "light")}
+                    className={`ml-6 flex items-center justify-center rounded-full p-1 w-10
+                    ${mode === "dark" ? "bg-light text-dark" : "bg-dark text-light"}`}
+                >
+                    {
+                        mode === "dark" ?
+                            <SunIcon className={"fill-dark"} />
+                            :
+                            <MoonIcon className={"fill-dark"} />
+                    }
+                </button>
+
             </nav>
 
             <div className='absolute left-[50%] top-2 translate-x-[.50%]'>
-                <Logo />
+                <Logo className={`${router.pathname === "/projects" ? "!border-light" : ""}`} />
             </div>
         </header>
     )

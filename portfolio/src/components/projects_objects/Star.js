@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 
-const Star1 = ({ initialPosition, randomRadius, speed, color }) => {
+const Star = ({ initialPosition, randomRadius, speed, color }) => {
     const ref = useRef();
     const time = useRef(0);  // Using useRef to persist state across renders
 
@@ -30,4 +30,4 @@ const Star1 = ({ initialPosition, randomRadius, speed, color }) => {
     );
 };
 
-export default Star1;
+export default Star;

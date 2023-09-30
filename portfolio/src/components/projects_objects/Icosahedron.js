@@ -3,10 +3,12 @@ import { useFrame } from "@react-three/fiber";
 
 const Icosahedron = ({ rotationSpeed = -0.25, color }) => {
     const ref = useRef();
-    useFrame((state) => {
+    const time = useRef(0);
+
+    useFrame((state, delta) => {
         if (ref.current) {
-            const time = state.clock.elapsedTime;
-            ref.current.rotation.y = time * rotationSpeed;  // Adjust the rotation speed as needed
+            time.current += delta * rotationSpeed;
+            ref.current.rotation.y = time.current;
         }
     });
 

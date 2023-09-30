@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, createContext, useContext } from "react";
 import { Canvas, useThree, useFrame } from "@react-three/fiber";
 import { degreesToRadians, mix } from "popmotion";
 import * as THREE from 'three';
@@ -21,6 +21,14 @@ useEffect(() => {
 }, [scene]);
 */
 
+// Context for the planet hover
+const PlanetHoverContext = createContext();
+export const usePlanetHover = () => {
+    return useContext(PlanetHoverContext);
+};
+export const PlanetHoverProvider = PlanetHoverContext.Provider;
+
+// Lerp function
 function lerp(start, end, t) {
     return start * (1 - t) + end * t;
 }
@@ -38,7 +46,7 @@ const Scene = ({ starAmount, cameraAngle }) => {
         camera.updateProjectionMatrix();
         camera.lookAt(0, 0, 0);
     });
-    
+
     const [currentCameraAngle, setCurrentCameraAngle] = useState(cameraAngle);
     useFrame(() => {
         const distance = 35;
@@ -124,6 +132,7 @@ const Scene = ({ starAmount, cameraAngle }) => {
 // export projects page
 const projects = () => {
     const containerRef = useRef();
+    const [isPlanetHovered, setIsPlanetHovered] = useState(false);
 
     // When scrolling, move camera position
     const [cameraAngle, setCameraAngle] = useState(0);
@@ -154,7 +163,9 @@ const projects = () => {
             </Head>
 
             <Canvas style={{ position: 'fixed', top: 0, left: 0, bottom: 0, right: 0, zIndex: 1, backgroundColor: "#000000" }}>
-                <Scene starAmount={200} cameraAngle={cameraAngle} />
+                <PlanetHoverProvider value={[isPlanetHovered, setIsPlanetHovered]}>
+                    <Scene starAmount={200} cameraAngle={cameraAngle} />
+                </PlanetHoverProvider>
             </Canvas>
 
             <main ref={containerRef} style={{ pointerEvents: 'none' }} className='w-full bg-transparent'>

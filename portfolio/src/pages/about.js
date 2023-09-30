@@ -6,7 +6,6 @@ import React, { useEffect, useRef } from 'react'
 import profilePic from "../../public/images/profile/developer-pic-2.jpg"
 import { spring, useInView, useMotionValue, useSpring } from 'framer-motion'
 import Skills from '@/components/Skills'
-import { useRouter } from 'next/router'
 
 const AnimatedNumbers = ({ value }) => {
     const ref = useRef(null)

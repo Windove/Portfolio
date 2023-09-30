@@ -18,6 +18,7 @@ const CustomLink = ({ href, title, className = "" }) => {
             absolute left-0 -bottom-0.5
             group-hover:w-full transition-[width] ease duration-300
             ${router.pathname === href ? "w-full" : "w-0"}
+            ${router.pathname === "/projects" ? "!bg-light" : ""}
             dark:bg-light
             `}>&nbsp;</span>
         </Link>
@@ -28,6 +29,7 @@ const CustomLink = ({ href, title, className = "" }) => {
 const NavBar = ({ className = "" }) => {
 
     const [mode, setMode] = useThemeSwitcher();
+    const router = useRouter();
 
     return (
         <header className={`w-full px-32 py-8 font-medium flex items-center justify-between ${className}
@@ -78,7 +80,7 @@ const NavBar = ({ className = "" }) => {
             </nav>
 
             <div className='absolute left-[50%] top-2 translate-x-[.50%]'>
-                <Logo />
+                <Logo className={`${router.pathname === "/projects" ? "!border-light" : ""}`}/>
             </div>
         </header>
     )

@@ -4,6 +4,7 @@ import Head from "next/head"
 import NavBar from '../components/NavBar'
 import Footer from '../components/Footer'
 import { useRouter } from 'next/router'
+import React, { useEffect } from 'react';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -13,9 +14,23 @@ const montserrat = Montserrat({
 export default function App({ Component, pageProps }) {
   const router = useRouter();
 
+  useEffect(() => {
+    const handleRouteChange = () => {
+      window.scrollTo(0, 0);
+    };
+
+    // Listen to route changes
+    router.events.on('routeChangeComplete', handleRouteChange);
+
+    // Cleanup the event listener when the component is unmounted
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router]);
+
   // Conditionally apply 'bg-light' class
   const bgColorClass = router.pathname !== '/projects' ? 'bg-light' : 'bg-transparent';
-  const footerColorClass = router.pathname !== '/projects' ? '' : '!bg-transparent !text-light';
+  const colorClass = router.pathname !== '/projects' ? '' : '!bg-transparent !text-light';
 
   // Determine if it's the projects page
   const isProjectsPage = router.pathname === '/projects';
@@ -30,11 +45,11 @@ export default function App({ Component, pageProps }) {
 
       <main className={`dark:bg-dark ${montserrat.variable} font-mont ${bgColorClass} w-full min-h-screen`}>
         <div className={`${fixedClass} top-0`}>
-          <NavBar className={`${footerColorClass}`} />
+          <NavBar className={`${colorClass}`} />
         </div>
         <Component {...pageProps} />
         <div className={`${fixedClass} bottom-0`}>
-          <Footer className={`${footerColorClass}`} />
+          <Footer className={`${colorClass}`} />
         </div>
       </main>
     </>

@@ -6,13 +6,14 @@ import React, { useEffect, useRef } from 'react'
 import profilePic from "../../public/images/profile/developer-pic-2.jpg"
 import { spring, useInView, useMotionValue, useSpring } from 'framer-motion'
 import Skills from '@/components/Skills'
+import { useRouter } from 'next/router'
 
 const AnimatedNumbers = ({ value }) => {
     const ref = useRef(null)
 
     const motionValue = useMotionValue(0)
     const springValue = useSpring(motionValue, { duration: 3000 })
-    const isInView = useInView(ref, {once: true});
+    const isInView = useInView(ref, { once: true });
 
     useEffect(() => {
         if (isInView) {
@@ -36,6 +37,12 @@ const AnimatedNumbers = ({ value }) => {
 }
 
 const about = () => {
+    // useEffect hook to set the scroll position to top when the component is mounted
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        console.log("mounted home page")
+    }, []);
+    
     return (
         <>
             <Head>
@@ -43,12 +50,12 @@ const about = () => {
                 <meta name='description' content='any description' />
             </Head>
 
-            <main className='flex w-full flex-col items-center justify-center'>
+            <main className='flex w-full flex-col items-center justify-center dark:text-light'>
                 <Layout className='pt-16'>
                     <AnimatedText text="Passion Fuels Purpose!" className='mb-16' />
                     <div className='grid w-full grid-cols-8 gap-16'>
                         <div className='col-span-3 flex flex-col items-start justify-start'>
-                            <h2 className='mb-4 text-lg font-bold uppercase text-dark/75'>About me</h2>
+                            <h2 className='mb-4 text-lg font-bold uppercase text-dark/75 dark:text-light/75'>About me</h2>
                             <p className='font-medium'>
                                 Hi, I'm Lukas Thrane, a web developer and UI/UX designer with a passion for creating beautiful, functional,
                                 and user-centered digital experiences. With 4 years of experience in the field. I am always looking for
@@ -65,30 +72,30 @@ const about = () => {
                             </p>
                         </div>
                         <div className='col-span-3 relative h-max rounded-2xl border-2 border-solid border-dark
-                        bg-light p-8'
+                        bg-light p-8 dark:bg-dark dark:border-light dark:text-dark'
                         >
-                            <div className='absolute top-0 -right-3 -z-10 w-[102%] h-[103%] rounded-[2rem] bg-dark' />
+                            <div className='absolute top-0 -right-3 -z-10 w-[102%] h-[103%] rounded-[2rem] bg-dark dark:bg-light' />
                             <Image src={profilePic} alt="Lukas Thrane" className='w-full h-auto rounded-2xl' />
                         </div>
 
-                        <div className='col-span-2 flex flex-col items-end justify-between'>
+                        <div className='col-span-2 flex flex-col items-end justify-betwee'>
                             <div className='flex flex-col items-end justify-center'>
                                 <span className='inline-block text-7xl font-bold'>
                                     <AnimatedNumbers value={50} />+
                                 </span>
-                                <h2 className='text-xl font-medium capitalize text-dark/75'>satisfied clients</h2>
+                                <h2 className='text-xl font-medium capitalize text-dark/75 dark:text-light/75'>satisfied clients</h2>
                             </div>
                             <div className='flex flex-col items-end justify-center'>
                                 <span className='inline-block text-7xl font-bold'>
                                     <AnimatedNumbers value={40} />+
                                 </span>
-                                <h2 className='text-xl font-medium capitalize text-dark/75'>projects completed</h2>
+                                <h2 className='text-xl font-medium capitalize text-dark/75 dark:text-light/75'>projects completed</h2>
                             </div>
                             <div className='flex flex-col items-end justify-center'>
-                            <span className='inline-block text-7xl font-bold'>
+                                <span className='inline-block text-7xl font-bold'>
                                     <AnimatedNumbers value={4} />+
                                 </span>
-                                <h2 className='text-xl font-medium capitalize text-dark/75'>years of experience</h2>
+                                <h2 className='text-xl font-medium capitalize text-dark/75 dark:text-light/75'>years of experience</h2>
                             </div>
                         </div>
                     </div>

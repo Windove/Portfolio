@@ -5,9 +5,16 @@ import Image from 'next/image'
 import profilePic from "../../public/images/profile/developer-pic-1.png"
 import Link from 'next/link'
 import { LinkArrow } from '@/components/Icons'
+import { useEffect } from 'react'
 
 
 export default function Home() {
+  // useEffect hook to set the scroll position to top when the component is mounted
+  useEffect(() => {
+      window.scrollTo(0, 0);
+      console.log("mounted home page")
+  }, []);
+
   return (
     <>
       <Head>

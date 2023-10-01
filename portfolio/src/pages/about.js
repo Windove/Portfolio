@@ -70,8 +70,7 @@ const about = () => {
                                 every project I work on. I look forward to the opportunity to bring my skills and passion to your next project.
                             </p>
                         </div>
-                        <div className='col-span-3 relative h-max rounded-2xl border-2 border-solid border-dark
-                        bg-light p-8 dark:bg-dark dark:border-light dark:text-dark'
+                        <div className='col-span-3 relative h-max rounded-2xl border-2 border-solid border-dark bg-light p-8 dark:bg-dark dark:border-light dark:text-dark'
                         >
                             <div className='absolute top-0 -right-3 -z-10 w-[102%] h-[103%] rounded-[2rem] bg-dark dark:bg-light' />
                             <Image src={profilePic} alt="Lukas Thrane" className='w-full h-auto rounded-2xl' />

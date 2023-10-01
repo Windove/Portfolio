@@ -32,9 +32,7 @@ const NavBar = ({ className = "" }) => {
     const router = useRouter();
 
     return (
-        <header className={`w-full px-32 py-8 font-medium flex items-center justify-between ${className}
-        dark:text-light
-        `}>
+        <header className={`w-full px-32 py-8 font-medium flex items-center justify-between ${className} dark:text-light`}>
             <nav>
                 <CustomLink href='/' title={"Home"} className='mr-4' />
                 <CustomLink href='/about' title={"About"} className='mx-4' />
@@ -68,8 +66,7 @@ const NavBar = ({ className = "" }) => {
 
                 <button
                     onClick={() => setMode(mode === "light" ? "dark" : "light")}
-                    className={`ml-6 flex items-center justify-center rounded-full p-1 w-10
-                    ${mode === "dark" ? "bg-light text-dark" : "bg-dark text-light"}`}
+                    className={`ml-6 flex items-center justify-center rounded-full p-1 w-10 ${mode === "dark" ? "bg-light text-dark" : "bg-dark text-light"}`}
                 >
                     {
                         mode === "dark" ?

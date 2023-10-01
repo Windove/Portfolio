@@ -36,10 +36,7 @@ export default function Home() {
               </p>
               <div className="flex items-center self-start mt-2">
                 <Link href="/dummy.pdf" target={"_blank"} download={true}
-                  className='flex items-center bg-dark text-light p-2.5 px-6 rounded-lg text-lg font-semibold
-                hover:bg-light hover:text-dark transition duration-200 ease-in-out
-                border-2 border-solid border-transparent hover:border-dark 
-                dark:bg-light dark:text-dark hover:dark:bg-dark hover:dark:text-light dark:border-light'
+                  className='flex items-center bg-dark text-light p-2.5 px-6 rounded-lg text-lg font-semibold hover:bg-light hover:text-dark transition duration-200 ease-in-out border-2 border-solid border-transparent hover:border-dark dark:bg-light dark:text-dark hover:dark:bg-dark hover:dark:text-light dark:border-light'
                 >Resume <LinkArrow className={"w-6 h-6 ml-1"} />
                 </Link>
                 <Link href="mailto:lukas@thrane.name" target={"_blank"}

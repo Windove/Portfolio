@@ -5,6 +5,7 @@ import NavBar from '../components/NavBar'
 import Footer from '../components/Footer'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react';
+import { NextUIProvider } from '@nextui-org/react'
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -38,20 +39,22 @@ export default function App({ Component, pageProps }) {
 
   return (
     <>
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <NextUIProvider>
+        <Head>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <main className={`dark:bg-dark ${montserrat.variable} font-mont ${bgColorClass} w-full min-h-screen`}>
-        <div className={`${fixedClass} top-0`}>
-          <NavBar className={`${colorClass}`} />
-        </div>
-        <Component {...pageProps} />
-        <div className={`${fixedClass} bottom-0`}>
-          <Footer className={`${colorClass}`} />
-        </div>
-      </main>
+        <main className={`dark:bg-dark ${montserrat.variable} font-mont ${bgColorClass} w-full min-h-screen`}>
+          <div className={`${fixedClass} top-0`}>
+            <NavBar className={`${colorClass}`} />
+          </div>
+          <Component {...pageProps} />
+          <div className={`${fixedClass} bottom-0`}>
+            <Footer className={`${colorClass}`} />
+          </div>
+        </main>
+      </NextUIProvider>
     </>
   );
 }

@@ -11,8 +11,8 @@ import { useEffect } from 'react'
 export default function Home() {
   // useEffect hook to set the scroll position to top when the component is mounted
   useEffect(() => {
-      window.scrollTo(0, 0);
-      console.log("mounted home page")
+    window.scrollTo(0, 0);
+    console.log("mounted home page")
   }, []);
 
   return (
